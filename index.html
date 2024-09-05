@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather  App </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        
+        <div class="search">
+            <input type="text" placeholder="search your place" spellcheck="false">
+          <button><img src="img/search.png"></button>  
+        </div>
+        <div class="weather">
+            <img src="img/rain.png" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">Nepal</h2>
+
+            <div class="details"> 
+            <div class="cols">
+                <img src="img/humidity.png">
+                <div>
+                    <p class="humidity">50%</p>
+                    <p class="txt">Humidity</p>
+                </div>
+            </div>
+            <!-- second column -->
+            <div class="cols">
+                <img src="img/wind.png">
+                <div>
+                    <p class="Wind-speed">30 KM/H</p>
+                    <p class="txt">Wind</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "6137d5abf724508c5e264b37cb880c4f";
+        const apiURL= "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+           const searchBox= document.querySelector(".search input");
+           const searchBtn= document.querySelector(".search button");
+           const weathericon= document.querySelector(".weather-icon");
+
+        async function checkweather(city) {
+            const response= await fetch(apiURL + city + `&appid=${apiKey}`);
+            var data = await response.json();
+
+            // displayong data in console
+            console.log(data);
+// data form console fetech from api
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";      
+            document.querySelector(".Wind-speed").innerHTML = data.wind.speed + " KM/Hrs";
+
+// for image change able according to weather climate conditions
+
+            if(data.weather[0].main=="Clouds"){
+                weathericon.src = "img/clouds.png";
+            }
+            else if(data.weather[0].main=="Clear"){
+                weathericon.src ="img/clear.png";
+            }
+            else if(data.weather[0].main=="Rain"){
+                weathericon.src = "img/rain.png";
+            }
+            else if(data.weather[0].main=="Drizzle"){
+                weathericon.src = "img/drizzle.png";
+            }
+            else if(data.weather[0].main=="Mist"){
+                weathericon.src = "/img/mist.png";
+            }
+            else if(data.weather[0].main=="Snow"){
+                weathericon.src = "img/snow.png";
+            }
+
+
+        }
+
+        searchBtn.addEventListener("click", () => {
+            checkweather(searchBox.value);  
+        } )
+
+
+        
+    </script> 
+    <!-- //firebase Script hosting -->
+    <!-- <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyBsxPEXaTHQEeBbKWtYDnRxDyY1yTP3jvo",
+          authDomain: "city-weather-bcf7c.firebaseapp.com",
+          projectId: "city-weather-bcf7c",
+          storageBucket: "city-weather-bcf7c.appspot.com",
+          messagingSenderId: "263411193680",
+          appId: "1:263411193680:web:c9d68e22613cab04ac3e55",
+          measurementId: "G-MZPR95DXKG"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script> -->
+    
+</body>
+</html>
